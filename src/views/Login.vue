@@ -48,17 +48,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'Login',
+export default {
+  name: 'Login',
 
-    data: () => ({
+  data: () => ({
      
-    }),
-    props:{
+  }),
+  props:{
      
-    }
   }
+}
 </script>
+
 <style scoped>
 
 
