@@ -1,6 +1,4 @@
 <template>
-<v-app>
-  <v-content>
     <v-container class="center" fluid>
       <v-row align="center" justify="center">
         <v-col cols="12"  sm="4" md="4" >
@@ -47,8 +45,6 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-content>
-</v-app>
 </template>
 
 <script>

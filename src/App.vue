@@ -8,6 +8,7 @@
     </v-app-bar>
 
     <v-content>
+      <router-view></router-view>
       <Login/>
     </v-content>
   </v-app>
