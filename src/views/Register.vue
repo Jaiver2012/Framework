@@ -13,6 +13,36 @@
                     <v-card-text class="mt-5">
 
                         <v-form>
+
+                            <h2 class="ml-5">Introduzca su nombre</h2>
+                            <br>
+                            <v-text-field
+                            v-model="name"
+                            label="Nombre"
+                            name="Nombre"
+                            append-icon="face"
+                            type="text"
+                            color="blue"
+                            outlined
+                            :rules="nameRules"
+                            >
+                            </v-text-field>
+
+                            <h2 class="ml-5">Introduzca su apellido</h2>
+                            <br>
+                            <v-text-field
+                            v-model="lastName"
+                            label="Apellido"
+                            name="Apellido"
+                            append-icon="face"
+                            type="text"
+                            color="blue"
+                            outlined
+                            :rules="lastNameRules"
+                            >
+                            </v-text-field>
+
+
                             <h2 class="ml-5">Introduzca email con el qe se quiere registrar</h2>
                             <br>
                             <v-text-field
@@ -31,9 +61,7 @@
                             <br>
                             <v-text-field
                             v-model="password1"
-                            id="password"
                             label="Password"
-                            name="Password"
                             append-icon="lock"
                             type="password"
                             color="blue"
@@ -46,9 +74,7 @@
                             <br>
                             <v-text-field
                             v-model="password2"
-                            id="password"
                             label="Password"
-                            name="Password"
                             append-icon="lock"
                             type="password"
                             color="blue"
@@ -76,18 +102,54 @@
               
             </v-window> 
           </v-card>
+
+
+            <v-dialog
+            v-model="dialog"
+            max-width="290"
+            >
+                <v-card>
+                    <v-card-title class="headline">Error al registrarse</v-card-title>
+                    <v-card-text>
+                        El usuario con el email {{email}} ya se encuentra registrado.
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                        color="primary darken-1"
+                        text
+                        @click="dialog = false"
+                        >
+                            Aceptar
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+
         </v-col>
       </v-row>
     </v-container>
 </template>
 
 <script>
+import db from '../config/firebase'
 
 export default {
     name: 'Register',
     data() {
         return {
-            show: true,
+            dialog: false,
+            name:'',
+            nameRules: [
+                v => !!v || 'El nombre es requerido',
+                v => v.length >2 || 'El nombre debe ser más largo a 3 caracteres',
+            ],
+            lastName:'',
+            lastNameRules: [
+                v => !!v || 'El apellido es requerido',
+                v => v.length >2 || 'El apellido debe ser más largo a 3 caracteres',
+            ],
             email:'',
             emailRules: [
                 v => !!v || 'E-mail is required',
@@ -106,16 +168,39 @@ export default {
         }
     },
     methods: {
-        register(){
+        async register(){
+
+            window.console.log("hola");
+
+            var snapshot = await db.collection("users").doc("luisfcv97@gmail.com").get();
+            if(!snapshot.data()){
+                
+                var md5 = require('md5');
+                let pmd5 = md5(this.password1);
+                console.log(pmd5);
+
+                await db.collection('users').doc(this.email).set({
+                    email: this.email,
+                    password: pmd5,
+                    name: this.name,
+                    lastName: this.lastName,
+                    role: "user",
+                    state: "activo"
+                });
+
+
+            }else{
+                this.dialog = true;
+            }
             
-        }
+        },
     },
     computed: {
         disabledButton(){
             console.log("email: "+this.email);
             console.log("p2: "+this.password1);
             console.log("p1: "+this.password2);
-            return( !this.email || !this.password1 || !this.password2 || !(this.password1 === this.password2) );
+            return( !this.name || !this.lastName ||!this.email || !this.password1 || !this.password2 || !(this.password1 === this.password2) );
         }
     },
 
