@@ -50,8 +50,8 @@ export default {
                             'message': doc.data().message,
                             'forumSubject': doc.data().forumSubject,
                             'creator': doc.data().creator,
-                            'creationDate': doc.data().creationDate
-                            //'messages': doc.messages.length
+                            'creationDate': doc.data().creationDate,
+                            'dad': doc.data().dad
                         }
                         this.messages.push(data)
                     })
