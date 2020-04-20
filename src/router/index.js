@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+
+
 Vue.use(VueRouter)
 
 
@@ -10,13 +12,22 @@ export default new VueRouter({
         {
             path: '/login',
             name: 'Login',
-            component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+            component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue'),
+           
         },
         {
             path: '/register',
             name: 'Register',
             component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
-        }
+        },
+        {
+            path: '/userAdmin',
+            name: 'userAdmin',
+            component: () => import(/* webpackChunkName: "about" */ '../views/UserAdmin.vue')
+        },
+      
+
+
     ]
 
 })
