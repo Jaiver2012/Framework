@@ -4,19 +4,24 @@
       <v-toolbar flat color="white">
         <v-toolbar-title>{{desserts.length}}</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
+        <v-spacer>
+            <v-btn color="blue" text @click="add">Agregar usuario</v-btn>
+        </v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ }">
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
-              color="success"
+              color="blue"
               append-icon="mdi-magnify"
               label="Search"
               single-line
               hide-details
             ></v-text-field>
+
           </template>
+       
+        
           <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
@@ -26,13 +31,19 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="name"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Nombre"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.lastname" label="lastname"></v-text-field>
+                    <v-text-field v-model="editedItem.lastName" label="Apellido"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.email" label="email"></v-text-field>
+                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.role" label="Rol"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.password" label="Contraseña" type="password"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -50,13 +61,18 @@
     <template v-slot:item.action="{ item }">
       <div class="my-2">
         <v-btn rounded color="success" @click="editItem(item)">Editar</v-btn>
-        <v-btn rounded color="red" @click="editItem(item)">Eliminar</v-btn>
+        <v-btn rounded color="red" @click="deleteItem(item)">Eliminar</v-btn>
       </div>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
+
   </v-data-table>
+
+
+  
+
 </template>
 
 <style scoped>
@@ -70,9 +86,10 @@ export default {
     search: "",
     headers: [
       { text: "Nombre", value: "name" },
-      { text: "Apellido", value: "lastname" },
+      { text: "Apellido", value: "lastName" },
       { text: "Email", value: "email" },
       { text: "Password", value: "password" },
+      { text: "Rol", value: "role" },
       { text: "Acciones", value: "action", sortable: false }
     ],
 
@@ -80,26 +97,30 @@ export default {
     editedIndex: -1,
     editedItem: {
       name: "",
-      lastname: "",
+      lastName: "",
       email: "",
-      password: ""
+      password: "",
+      role:"",
+      
     },
     defaultItem: {
       name: "",
-      lastname: "",
+      lastName: "",
       email: "",
-      password: ""
-    }
+      password: "",
+      role:"",
+    },
+    idItem:null
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Detalles del reporte";
+      return this.editedIndex === -1 ? "Agrega un usuario" : "Editar usuario";
     }
   },
 
   mounted() {
-    
+     
   },
 
   watch: {
@@ -108,38 +129,53 @@ export default {
     }
   },
 
-  created() {
-      this.initialize();
-  },
+ 
 
   methods: {
     initialize() {
+        this.desserts=[];
       db.collection("users")
         .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const data = {
-              name: doc.data().name,
-              email: doc.data().email,
-              lastname: doc.data().lastName
-            };
-            console.log(data)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const data={
+                'name':doc.data().name,
+                'email':doc.data().email,
+                'lastName':doc.data().lastName,
+                'password':doc.data().password,
+                'role':doc.data().role,
+                'id':doc.id
+
+            }
             this.desserts.push(data);
           });
         });
     },
 
+    add(){
+        this.editedIndex=-1;
+        this.dialog=true;
+    },
 
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+      this.idItem=item.id;
     },
 
     deleteItem(item) {
       const index = this.desserts.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.desserts.splice(index, 1);
+        //var user = db.collection("users").doc(item.email).get();
+        console.log("a ver:"+item.id)
+         db.collection("users").doc(item.id).delete().then(function(){
+            console.log("se borro");
+        }).catch(function(error){
+            console.error("error",error);
+        })
+       
     },
 
     close() {
@@ -151,13 +187,40 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      if (this.editedIndex ===-1) {
+       //lo agregamos
+        db.collection("users").add(this.editedItem)
+        .then((docRef)=>{
+            console.log("Document con ID:",docRef.id)
+            this.initialize();
+        }).catch(function(error){
+            console.error("Error:",error);}
+            );
+            
+        
+        
+
       } else {
-        this.desserts.push(this.editedItem);
+          //lo editamos
+        //this.desserts.push(this.editedItem);
+        db.collection("users").doc(this.idItem).update(this.editedItem)
+        .then((docRef)=>{
+            console.log("se edito",docRef.id);
+            
+        })
+        .catch(function(error){
+            console.error("error al editar",error);
+        });
+         this.initialize();
       }
-      this.close();
+     
+      this.close()
+      
     }
-  }
+  },
+
+   created() {
+     this.initialize();
+  },
 };
 </script>
