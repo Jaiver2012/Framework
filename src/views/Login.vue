@@ -110,11 +110,7 @@ export default {
           }else{
             console.log("al estandar")
             //ruta del estandar
-<<<<<<< HEAD
             this.$router.push("/forums");
-=======
-            
->>>>>>> 11da48bcf4f5521c3b37ec279994ae39cc5102cb
           }
 
         }
