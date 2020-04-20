@@ -6,10 +6,23 @@
         <v-card-subtitle>
             Creado: {{messageData.creationDate}}
         </v-card-subtitle>
+       
         <v-divider class="mx-5"></v-divider>
         <v-card-text class="headline font-weight-bold">
             {{messageData.message}}
         </v-card-text>
+        
+         <v-card-actions >
+            <v-spacer></v-spacer>
+            <v-btn text class="mr-10" >
+                Editar
+                <v-icon right>create</v-icon>
+            </v-btn>
+            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser">
+                Responder
+                <v-icon right>create</v-icon>
+            </v-btn>
+        </v-card-actions>
     </v-card>
     
 </template>
