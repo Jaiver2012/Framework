@@ -16,6 +16,21 @@ export default new VueRouter({
             path: '/register',
             name: 'Register',
             component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
+        },
+        {
+            path: '/forums',
+            name: 'Forums',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Forums.vue')
+        },
+        {
+            path: '/createForum',
+            name: 'CreateForum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/CreateForum.vue')
+        },
+        {
+            path: '/forum/:id',
+            name: 'Forum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Forum.vue')
         }
     ]
 

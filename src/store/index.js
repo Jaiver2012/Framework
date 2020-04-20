@@ -5,8 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        forums:[
+
+        ]
     },
     mutations: {
+        loadForums(state, listCharged){
+            state.forums = listCharged
+        }
     },
     actions: {
     },
