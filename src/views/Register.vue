@@ -170,9 +170,7 @@ export default {
     methods: {
         async register(){
 
-            window.console.log("hola");
-
-            var snapshot = await db.collection("users").doc("luisfcv97@gmail.com").get();
+            var snapshot = await db.collection("users").doc(this.email).get();
             if(!snapshot.data()){
                 
                 var md5 = require('md5');
@@ -188,6 +186,7 @@ export default {
                     state: "activo"
                 });
 
+                this.$router.push('/login');
 
             }else{
                 this.dialog = true;

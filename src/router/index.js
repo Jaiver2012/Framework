@@ -24,10 +24,26 @@ export default new VueRouter({
             path: '/userAdmin',
             name: 'userAdmin',
             component: () => import(/* webpackChunkName: "about" */ '../views/UserAdmin.vue')
+        },{
+            path: '/forums',
+            name: 'Forums',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Forums.vue')
         },
-      
-
-
+        {
+            path: '/createForum',
+            name: 'CreateForum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/CreateForum.vue')
+        },
+        {
+            path: '/forum',
+            name: 'Forum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Forum.vue')
+        },
+        {
+            path: '/addCommentForum/:typeComment',
+            name: 'AddCommentForum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/AddCommentForum.vue')
+        }
     ]
 
 })

@@ -5,11 +5,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        users:[]
+        currentUser:'luisfcv97@gmail.com',
+        forums:[
+
+        ],
+        currentIndexForum:{},
     },
     mutations: {
-        fillusers(state,u){
-            state.users=u
+        loadForums(state, listCharged){
+            state.forums = listCharged
+        },
+        changeCurrentForum(state,index){
+            state.currentIndexForum = state.forums[index];
         }
     },
     actions: {
