@@ -4,7 +4,7 @@
         <CardDataForum/>
 
         <div class="mt-10">
-            <v-btn rounded large color="primary" dark to="/addCommentForum">
+            <v-btn rounded large color="primary" dark to="/addCommentForum/0">
                 <v-icon left>add_comment</v-icon>
                 Añadir comentario
             </v-btn>
