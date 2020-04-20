@@ -127,7 +127,7 @@ export default {
             console.log(dt);
             try {
                 await db.collection('forums').doc(this.subject).set({
-                    creator: 'luisfcv97@gmail.com',
+                    creator: this.$store.state.currentUser,
                     subject: this.subject,
                     description: this.description,
                     creationDate: dt,

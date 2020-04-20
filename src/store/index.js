@@ -9,7 +9,13 @@ export default new Vuex.Store({
         forums:[
 
         ],
-        currentIndexForum:{},
+        currentIndexForum:{
+
+        },
+        currentMessageToResponse:{
+
+        },
+        
     },
     mutations: {
         loadForums(state, listCharged){
@@ -20,6 +26,9 @@ export default new Vuex.Store({
         },
         changeCurrentUer(state,user){
             state.currentUser = user;
+        },
+        changeCurrentMessageToResponse(state,mesage){
+            state.currentMessageToResponse= mesage;
         }
     },
     actions: {

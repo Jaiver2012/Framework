@@ -18,7 +18,7 @@
                 Editar
                 <v-icon right>create</v-icon>
             </v-btn>
-            <v-btn text class="mr-10">
+            <v-btn text class="mr-10" @click="responseComment(messageData)">
                 Responder
                 <v-icon right>create</v-icon>
             </v-btn>
@@ -30,7 +30,13 @@
 <script>
 export default {
     name: 'CardMessage',
-    props:['messageData']
+    props:['messageData'],
+    methods:{
+        responseComment(message){
+            this.$store.commit('changeCurrentMessageToResponse',message);
+            this.$router.push('/addCommentForum/1');
+        }
+    }
 }
 </script>
 

@@ -70,6 +70,7 @@ export default {
 
             try {
                 console.log(this.typeCommentIndex)
+
                 if(this.typeCommentIndex==0){
 
                     //add central comment to forum
@@ -79,11 +80,38 @@ export default {
                         creator: this.$store.state.currentUser,
                         message: this.message,
                         creationDate: dt,
+                        dad: this.$store.state.currentIndexForum.subject,
+                        son: ''
                     });
 
                 } else{
+                    var idDoc='';
 
-                    console.log("dei")
+                    await db.collection("messages").
+                    where("forumSubject","==",this.$store.state.currentIndexForum.subject).
+                    where('message','==',this.$store.state.currentMessageToResponse.message).
+                    get().then(
+                        querySnapshot => {
+                            querySnapshot.forEach(  doc => {
+                            idDoc=doc.id;
+                            })
+                        }
+                    );
+
+                    await db.collection('messages').doc(idDoc).update({
+                        son: this.message,
+                    });
+                    
+                     //add secondary comment to forum
+                
+                    await db.collection('messages').doc().set({
+                        forumSubject: this.$store.state.currentIndexForum.subject,
+                        creator: this.$store.state.currentUser,
+                        message: this.message,
+                        creationDate: dt,
+                        dad: this.$store.state.currentMessageToResponse.message,
+                        son: ''
+                    });                
                 }
             
 
@@ -102,7 +130,6 @@ export default {
                     numberMessages: nm
                 });
                 
-
 
                 this.$router.push('/forum');
             } catch (error) {
