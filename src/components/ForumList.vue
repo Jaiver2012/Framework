@@ -19,7 +19,9 @@
                 <v-list-item-action>
                     <v-badge
                     color="green"
-                    overlap>
+                    overlap
+                    :content="item.numberMessages.toString()"
+                    >
                         <v-btn icon>
                             <v-icon color="primary">chat_bubble</v-icon>
                         </v-btn>
@@ -32,6 +34,7 @@
 </template>
 
 <script>
+
 export default {
     name:'ForumList',
     computed: {
@@ -41,8 +44,9 @@ export default {
     },
     methods:{
         openForum(index){
-            this.$router.push('/forum/'+index);
-        }
+            this.$store.commit('changeCurrentForum',index);
+            this.$router.push('/forum/');
+        },
     },
     created() {
         

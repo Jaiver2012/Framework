@@ -22,6 +22,7 @@
         </v-row>
 
         <ForumList/>
+        
     </v-container>
 </template>
 
@@ -45,8 +46,8 @@ export default {
                             'creator': doc.data().creator,
                             'subject': doc.data().subject,
                             'description': doc.data().description,
-                            'creationDate': doc.data().creationDate
-                            //'messages': doc.messages.length
+                            'creationDate': doc.data().creationDate,
+                            'numberMessages': doc.data().numberMessages
                         }
                         forums.push(data)
                     })

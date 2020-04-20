@@ -57,7 +57,7 @@
                 color="error" 
                 dark
                 large
-                to="/forum"
+                to="/forums"
                 >
                     <v-icon left>close</v-icon>
                     Cancelar
@@ -80,7 +80,7 @@
                         color="primary darken-1"
                         text
                         @click="dialog = false"
-                        to="/forum"
+                        to="/forums"
                         >
                             Aceptar
                         </v-btn>
@@ -126,11 +126,12 @@ export default {
             }).toString();
             console.log(dt);
             try {
-                await db.collection('forums').doc().set({
+                await db.collection('forums').doc(this.subject).set({
                     creator: 'luisfcv97@gmail.com',
                     subject: this.subject,
                     description: this.description,
                     creationDate: dt,
+                    numberMessages: 0
                 });
                 
                 this.dialog =true;

@@ -28,9 +28,14 @@ export default new VueRouter({
             component: () => import(/* webpackChunkName: "about" */ '../views/CreateForum.vue')
         },
         {
-            path: '/forum/:id',
+            path: '/forum',
             name: 'Forum',
             component: () => import(/* webpackChunkName: "about" */ '../views/Forum.vue')
+        },
+        {
+            path: '/addCommentForum',
+            name: 'AddCommentForum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/AddCommentForum.vue')
         }
     ]
 

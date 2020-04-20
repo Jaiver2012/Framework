@@ -1,30 +1,67 @@
 <template>
     <v-container>
-        <v-row>
-            <h1>Asunto:</h1>
-            
-        </v-row>
+
+        <CardDataForum/>
+
+        <div class="mt-10">
+            <v-btn rounded large color="primary" dark to="/addCommentForum">
+                <v-icon left>add_comment</v-icon>
+                Añadir comentario
+            </v-btn>
+        </div>
+    
+        <div class="mt-10" v-if="messages.length==0">
+            <v-row>
+                No hay comentarios hasta la fecha.
+            </v-row>
+        </div>
+        <div class="mt-10" v-else>
+            <v-row v-for="(item, index) in messages" :key="index" class="my-5 mx-10">
+                <CardMessage :messageData="item"></CardMessage>
+            </v-row>
+        </div>
 
     </v-container>
-    
-    
 </template>
 
 <script>
-import  { mapState } from 'vuex';
+import CardDataForum from '../components/CardDataForum';
+import CardMessage from '../components/CardMessage';
+import db from '../config/firebase';
 
 export default {
     name:'Forum',
+    components:{
+        CardDataForum,
+        CardMessage
+    },
     data() {
         return {
-            iidf: this.$route.params.id
+            messages:[]
         }
     },
-    computed: {
-        ...mapState(['favorites'])
+    methods:{
+        async bringMessages(){
+            
+            await db.collection("messages").where("forumSubject","==",this.$store.state.currentIndexForum.subject).get().then(
+                querySnapshot => {
+                    querySnapshot.forEach(  doc => {
+                        const data = {
+                            'message': doc.data().message,
+                            'forumSubject': doc.data().forumSubject,
+                            'creator': doc.data().creator,
+                            'creationDate': doc.data().creationDate
+                            //'messages': doc.messages.length
+                        }
+                        this.messages.push(data)
+                    })
+                }
+            );
+
+        }
     },
-    methods: {
-        
+    created() {
+        this.bringMessages();
     },
 }
 </script>
