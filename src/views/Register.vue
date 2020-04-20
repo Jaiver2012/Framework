@@ -186,7 +186,7 @@ export default {
                     state: "activo"
                 });
 
-                this.$router.push('/login');
+                this.$router.push('/');
 
             }else{
                 this.dialog = true;

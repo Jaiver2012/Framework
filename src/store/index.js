@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        currentUser:'luisfcv97@gmail.com',
+        currentUser:'',
         forums:[
 
         ],
@@ -17,6 +17,9 @@ export default new Vuex.Store({
         },
         changeCurrentForum(state,index){
             state.currentIndexForum = state.forums[index];
+        },
+        changeCurrentUer(state,user){
+            state.currentUser = user;
         }
     },
     actions: {

@@ -10,7 +10,7 @@ export default new VueRouter({
     routes: [
 
         {
-            path: '/login',
+            path: '/',
             name: 'Login',
             component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue'),
            

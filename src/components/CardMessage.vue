@@ -14,11 +14,11 @@
         
          <v-card-actions >
             <v-spacer></v-spacer>
-            <v-btn text class="mr-10" >
+            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser">
                 Editar
                 <v-icon right>create</v-icon>
             </v-btn>
-            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser">
+            <v-btn text class="mr-10">
                 Responder
                 <v-icon right>create</v-icon>
             </v-btn>

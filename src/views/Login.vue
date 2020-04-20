@@ -103,13 +103,14 @@ export default {
 
         console.log("siiii esta en la bd")
         if(users.data().password==pmd5){
-         
+          this.$store.commit('changeCurrentUer',email);
           if(users.data().role==roleAdm){
             
             this.$router.push("/userAdmin");
           }else{
             console.log("al estandar")
             //ruta del estandar
+            this.$router.push("/forums");
           }
 
         }
