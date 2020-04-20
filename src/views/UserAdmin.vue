@@ -75,30 +75,30 @@ export default {
       { text: "Password", value: "password" },
       { text: "Acciones", value: "action", sortable: false }
     ],
-    
-    
+
+    desserts: [],
     editedIndex: -1,
     editedItem: {
       name: "",
       lastname: "",
       email: "",
-      password:""
+      password: ""
     },
     defaultItem: {
       name: "",
       lastname: "",
       email: "",
-      password:""
+      password: ""
     }
   }),
 
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Detalles del reporte";
-    },
-    desserts(){
-        return this.initialize();
     }
+  },
+
+  mounted() {
     
   },
 
@@ -109,52 +109,27 @@ export default {
   },
 
   created() {
-    
-    
+      this.initialize();
   },
 
-
-
   methods: {
-    async initialize() {
-        var arre=[];
-        
-        await db.collection("users")
-        .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(doc => {
-                        const data = {
-                            'name': doc.data().name,
-                            'email': doc.data().email,
-                            'lastname': doc.data().lastName,
-                            
-                            //'messages': doc.messages.length
-                        }
-
-              
-              console.log(data)
-                
-            arre.push(data)
-            
-            
-             //arre.push(doc.da)
-          });
-        });
-        
-        console.log(arre)
-        return arre;
-    },
-
-    initializeDessert() {
+    initialize() {
       db.collection("users")
         .get()
-        .then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              name: doc.data().name,
+              email: doc.data().email,
+              lastname: doc.data().lastName
+            };
+            console.log(data)
+            this.desserts.push(data);
           });
         });
     },
+
+
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
