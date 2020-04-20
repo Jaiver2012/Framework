@@ -222,7 +222,7 @@ export default {
 
       } else {
           //lo editamos
-        //this.desserts.push(this.editedItem);
+        
         db.collection("users").doc(this.idItem).update(this.editedItem)
         .then((docRef)=>{
             console.log("se edito",docRef.id);
@@ -231,6 +231,7 @@ export default {
         .catch(function(error){
             console.error("error al editar",error);
         });
+        this.desserts.push(this.editedItem);
          this.initialize();
       }
      

@@ -110,6 +110,7 @@ export default {
           }else{
             console.log("al estandar")
             //ruta del estandar
+            
           }
 
         }
