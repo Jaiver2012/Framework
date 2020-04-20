@@ -44,6 +44,9 @@
               >Iniciar</v-btn>
             </div>
           </v-window>
+          <v-alert v-model="showDismissibleAlert" type="warning">
+          {{error}}
+           </v-alert>
         </v-card>
       </v-col>
     </v-row>
@@ -58,6 +61,8 @@ export default {
 
   data() {
     return {
+      showDismissibleAlert: false,
+      error: "",
       email: "",
       emailRules: [
         v => !!v || "E-mail is required",
@@ -98,22 +103,26 @@ export default {
 
         console.log("siiii esta en la bd")
         if(users.data().password==pmd5){
-          console.log("si conciden papu")
-          console.log("Role:"+users.data().role)
+         
           if(users.data().role==roleAdm){
-            console.log("al admin")
+            
             this.$router.push("/userAdmin");
           }else{
             console.log("al estandar")
+            //ruta del estandar
           }
 
         }
         else{
-          console.log("tratame serio")
+          this.error="Contraseña incorrecta";
+          this.showDismissibleAlert = true;
+          //console.log("tratame serio")
         }
 
       }else{
-        console.log("no esta en la bd")
+        this.error="No se encuentra registrado";
+        this.showDismissibleAlert = true;
+        //console.log("no esta en la bd")
       }
       
     }
