@@ -31,19 +31,19 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Nombre"></v-text-field>
+                    <v-text-field v-model="editedItem.name" :rules="nameRules" label="Nombre"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.lastName" label="Apellido"></v-text-field>
+                    <v-text-field v-model="editedItem.lastName" :rules="lastNameRules" label="Apellido"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                    <v-text-field v-model="editedItem.email" :rules="emailRules" label="Email"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.role" label="Rol"></v-text-field>
+                    <v-text-field v-model="editedItem.role" :rules="roleRules" label="Rol"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.password" label="Contraseña" type="password"></v-text-field>
+                    <v-text-field v-model="editedItem.password" :rules="passwordRules" label="Contraseña" type="password"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -94,6 +94,26 @@ export default {
     ],
 
     desserts: [],
+    nameRules: [
+                v => !!v || 'El nombre es requerido',
+                v => v.length >2 || 'El nombre debe ser más largo a 3 caracteres',
+            ],
+    lastNameRules: [
+                v => !!v || 'El apellido es requerido',
+                v => v.length >2 || 'El apellido debe ser más largo a 3 caracteres',
+            ],
+    passwordRules: [
+                v => (v.length>4) || 'La contraseña debe tener más de 4 caracteres',
+
+            ],
+    roleRules: [
+                v => (v=='user'||v=='admin') || 'No es un role valido',
+
+            ],
+    emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail debe ser válido"
+      ],
     editedIndex: -1,
     editedItem: {
       name: "",
