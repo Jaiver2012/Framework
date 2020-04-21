@@ -302,7 +302,7 @@ export default {
         
         .then((docRef)=>{
            console.log(docRef)
-            this.initialize();
+            
         }).catch(function(error){
             console.error("Error:",error);}
             );
