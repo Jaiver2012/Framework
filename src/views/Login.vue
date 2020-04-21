@@ -123,7 +123,7 @@ export default {
               this.overlay = false;
               this.$router.push("/userAdmin");
             }else{
-
+              
               this.overlay = false;
               //ruta del estandar
               this.$router.push("/forums");
