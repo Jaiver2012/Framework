@@ -310,18 +310,9 @@ export default {
       } else {
           //lo editamos
         
-        db.collection("users").doc(this.idItem).update(this.editedItem)
-        .then((docRef)=>{
-            console.log("se edito",docRef.id);  
-            this.initialize();
-        })
-        .catch(function(error){
-            console.error("error al editar",error);
-        });
-        this.desserts=[];
-         this.initialize();
-        //this.desserts.push(this.editedItem);
-        
+        db.collection("users").doc(this.idItem).update(this.editedItem);
+
+        this.initialize();
       }
       this.close()
     }
