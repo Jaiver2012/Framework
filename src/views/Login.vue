@@ -99,7 +99,8 @@ export default {
        console.log("md5:"+pmd5)
       console.log(email, password,);
       var users = await db.collection("users").doc(email).get();
-      
+      console.log(users)
+      console.log(users.data())
       if(users.data()){
 
         console.log("siiii esta en la bd")

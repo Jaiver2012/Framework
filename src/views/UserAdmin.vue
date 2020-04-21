@@ -113,7 +113,7 @@ export default {
   data: () => ({
     dialog: false,
     search: "",
-    headers: [
+    headersAdmin: [
       { text: "Nombre", value: "name" },
       { text: "Apellido", value: "lastName" },
       { text: "Email", value: "email" },
@@ -122,6 +122,16 @@ export default {
       { text: "# Mensajes", value: "number" },
       { text: "Estado", value: "state" },
       { text: "Acciones", value: "action", sortable: false }
+    ],
+
+     headers: [
+      { text: "Nombre", value: "name" },
+      { text: "Apellido", value: "lastName" },
+      { text: "Email", value: "email" },
+      { text: "Password", value: "password" },
+      { text: "Rol", value: "role" },
+      { text: "# Mensajes", value: "number" },
+      { text: "Estado", value: "state" },
     ],
 
     desserts: [],

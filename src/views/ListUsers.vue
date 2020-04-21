@@ -42,6 +42,7 @@ export default {
       { text: "# Mensajes", value: "number" },
       { text: "Estado", value: "state" },
     ],
+    
 
     desserts: [],
   
@@ -111,9 +112,6 @@ export default {
           });
         });
         this.numberMessage();
-        
-
-
     },
   },
    created() {
