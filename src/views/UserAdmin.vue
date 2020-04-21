@@ -45,9 +45,7 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.password" :rules="passwordRules" label="Contraseña" type="password"></v-text-field>
                   </v-col>
-                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.state" :rules="stateRules" label="Estado"></v-text-field>
-                  </v-col>
+                  
                 </v-row>
               </v-container>
             </v-card-text>
@@ -155,10 +153,7 @@ export default {
         v => !!v || "E-mail is required",
         v => /.+@.+\..+/.test(v) || "E-mail debe ser válido"
       ],
-      stateRules: [
-                v => (v=='activo'||v=='inactivo') || 'No es un estado valido, solo activo o inactivo',
-                v => !!v || "Estado es requerido",
-            ],
+    
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -224,9 +219,7 @@ export default {
     },
    async initialize() {
         this.desserts=[];
-        
-        //console.log(this.numberMessage());
-       // console.log(this.numberMessage());
+  
      await db.collection("users")
         .get()
         .then((querySnapshot) => {
@@ -304,6 +297,7 @@ export default {
         var md5 = require('md5');
        let pmd5 = md5(this.editedItem.password);
        this.editedItem.password=pmd5
+       this.editedItem.state='No activo'
         db.collection("users").doc(this.editedItem.email).set(this.editedItem)
         
         .then((docRef)=>{
@@ -319,12 +313,15 @@ export default {
         db.collection("users").doc(this.idItem).update(this.editedItem)
         .then((docRef)=>{
             console.log("se edito",docRef.id);  
+            this.initialize();
         })
         .catch(function(error){
             console.error("error al editar",error);
         });
-        this.desserts.push(this.editedItem);
+        this.desserts=[];
          this.initialize();
+        //this.desserts.push(this.editedItem);
+        
       }
       this.close()
     }
