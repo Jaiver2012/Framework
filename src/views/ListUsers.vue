@@ -79,7 +79,7 @@ export default {
             .get()
             .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-              console.log(doc.data().creator)
+              
           if(doc.data().creator==this.desserts[i].email){
             n ++;
           }

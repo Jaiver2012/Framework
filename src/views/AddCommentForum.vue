@@ -73,7 +73,7 @@ export default {
             }).toString();
 
             try {
-                console.log(this.typeCommentIndex)
+
 
                 if(this.typeCommentIndex==0){
 

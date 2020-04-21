@@ -207,7 +207,7 @@ export default {
             .get()
             .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-              console.log(doc.data().creator)
+
           if(doc.data().creator==this.desserts[i].email){
             n ++;
           }
@@ -235,8 +235,7 @@ export default {
                 'state':doc.data().state,
 
             }
-            //this.numberMessage("admin2@prueba.com");
-             console.log(this.number);
+
             this.desserts.push(data);
           });
         });
@@ -265,9 +264,9 @@ export default {
         if(parseInt(item.number)==0){
             
         this.desserts.splice(index, 1);
-            console.log("a ver:"+item.id)
+
          db.collection("users").doc(item.id).delete().then(function(){
-            console.log("se borro");
+
         }).catch(function(error){
             console.error("error",error);
         })

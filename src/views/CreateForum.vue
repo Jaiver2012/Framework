@@ -128,7 +128,7 @@ export default {
                 minute: "numeric",
                 second: "numeric"
             }).toString();
-            console.log(dt);
+
             try {
                 await db.collection('forums').doc(this.subject).set({
                     creator: this.$store.state.currentUser,

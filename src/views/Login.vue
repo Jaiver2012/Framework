@@ -90,7 +90,7 @@ export default {
       var users = db.collection("users");
 
       users.doc("admin@prueba.com").get();
-      console.log("entross");
+
 
 
     },
@@ -140,14 +140,14 @@ export default {
           this.overlay = false;
           this.error="Contraseña incorrecta";
           this.showDismissibleAlert = true;
-          //console.log("tratame serio")
+
         }
 
       }else{
         this.overlay = false;
         this.error="No se encuentra registrado";
         this.showDismissibleAlert = true;
-        //console.log("no esta en la bd")
+
       }
       
     }

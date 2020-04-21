@@ -123,7 +123,7 @@ export default {
                 var itemToUpdate = arrayWithNewItem.indexOf( this.messageToEdit.message );
                 arrayWithNewItem.splice( itemToUpdate, 1 );
                 arrayWithNewItem.push(this.messageEdited);
-                console.log(arrayWithNewItem);
+
 
                 await db.collection('messages').doc(idDocDad).update({
                         sons: arrayWithNewItem,
