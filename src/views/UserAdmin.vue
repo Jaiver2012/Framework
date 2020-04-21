@@ -311,8 +311,8 @@ export default {
           //lo editamos
         
         db.collection("users").doc(this.idItem).update(this.editedItem);
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
 
-        this.initialize();
       }
       this.close()
     }
