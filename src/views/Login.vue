@@ -101,30 +101,39 @@ export default {
       var { email, password } = {};
       email = this.email;
       password = this.password;
-       var md5 = require('md5');
-       let pmd5 = md5(password);
-       console.log("md5:"+pmd5)
-      console.log(email, password,);
+      var md5 = require('md5');
+      let pmd5 = md5(password);
+
       var users = await db.collection("users").doc(email).get();
-      console.log(users)
-      console.log(users.data())
+
       if(users.data()){
 
-        console.log("siiii esta en la bd")
+        // login correct
         if(users.data().password==pmd5){
-          await db.collection("users").doc(email).update({
+
+          if(users.data().state == 'No activo'){
+
+            await db.collection("users").doc(email).update({
             state: 'Activo'
-          });
-          this.$store.commit('changeCurrentUser',email);
-          if(users.data().role==roleAdm){
-            this.overlay = false;
-            this.$router.push("/userAdmin");
+            });
+
+            this.$store.commit('changeCurrentRol', users.data().role);
+            this.$store.commit('changeCurrentUser',email);
+            if(users.data().role==roleAdm){
+              this.overlay = false;
+              this.$router.push("/userAdmin");
+            }else{
+
+              this.overlay = false;
+              //ruta del estandar
+              this.$router.push("/forums");
+            }
           }else{
-            console.log("al estandar");
             this.overlay = false;
-            //ruta del estandar
-            this.$router.push("/forums");
+            this.error="El usuario ya tiene una cuenta abierta";
+            this.showDismissibleAlert = true;
           }
+          
 
         }
         else{

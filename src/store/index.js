@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         currentUser:'',
+        currentRol:'',
         forums:[
 
         ],
@@ -29,6 +30,9 @@ export default new Vuex.Store({
         },
         changeCurrentMessageToResponse(state,mesage){
             state.currentMessageToResponse= mesage;
+        },
+        changeCurrentRol(state,rol){
+            state.currentRol = rol;
         }
     },
     actions: {

@@ -182,7 +182,7 @@ export default {
                     name: this.name,
                     lastName: this.lastName,
                     role: "user",
-                    state: "activo"
+                    state: "No activo"
                 });
 
                 this.$router.push('/');
