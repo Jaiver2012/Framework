@@ -20,8 +20,7 @@
             ></v-text-field>
 
           </template>
-            
-        
+           
           <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
