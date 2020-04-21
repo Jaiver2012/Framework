@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" :search="search" class="elevation-1">
+  <v-data-table :headers="headersAdmin" :items="desserts" :search="search" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>Usuarios</v-toolbar-title>
