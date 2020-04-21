@@ -29,7 +29,8 @@
         
          <v-card-actions >
             <v-spacer></v-spacer>
-            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser" :disabled="dissableDelete" @click="showDialogDeleteMessage">
+            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser" 
+            :disabled="dissableDelete" @click="showDialogDeleteMessage">
                 Eliminar
                 <v-icon right>delete</v-icon>
             </v-btn>
@@ -97,7 +98,11 @@ export default {
     computed: {
         dissableDelete(){
             
-            return !!this.messageData.sons.length;
+            if(this.messageData.sons.length==0 ){
+                return false;
+            } else{
+                return true;
+            }
         }
     },
     methods:{
@@ -127,10 +132,10 @@ export default {
             this.dialog = true
         },
         async deleteMessage(){
+            this.dialog = false;
             this.overlay = true;
 
             var idDoc='';
-                
             await db.collection("messages").
             where("forumSubject","==",this.$store.state.currentIndexForum.subject).
             where('message','==',this.messageData.message).
@@ -144,9 +149,56 @@ export default {
             );
 
             await db.collection("messages").doc(idDoc).delete();
+            if( this.messageDad.message ){
+                this.deleteSonOfDad();
+            }
 
+            
+            // update number of message that contains forum
+            var nm=0;
+                await db.collection("forums").where("subject","==",this.$store.state.currentIndexForum.subject).get().then(
+                querySnapshot => {
+                    querySnapshot.forEach(  doc => {
+                        
+                        nm=doc.data().numberMessages;
+                    })
+                }
+                );
+
+                nm--;
+                await db.collection('forums').doc(this.$store.state.currentIndexForum.subject).update({
+                    numberMessages: nm
+                });
+
+            
             this.overlay = false;
-            this.dialog = false;
+            this.$parent.bringMessages();
+        },
+        async deleteSonOfDad(){
+
+            var idDoc='';
+            var arrayWihtDeletedItem = [];
+            //change th son to father. Added specific son to son´s array father
+            //give me id of message daddy
+            await db.collection("messages").
+            where("forumSubject","==",this.$store.state.currentIndexForum.subject).
+            where('message','==',this.messageDad.message).
+            get().then(
+                querySnapshot => {
+                    querySnapshot.forEach(  doc => {
+                    idDoc=doc.id;
+                    arrayWihtDeletedItem = doc.data().sons
+                    })
+                }
+            );
+
+            var itemToDelete = arrayWihtDeletedItem.indexOf( this.messageData.message );
+            arrayWihtDeletedItem.splice( itemToDelete, 1 );
+
+            await db.collection('messages').doc(idDoc).update({
+                        sons: arrayWihtDeletedItem,
+            });
+
         }   
     },
     created() {

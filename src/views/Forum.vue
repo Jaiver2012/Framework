@@ -25,6 +25,10 @@
             </v-row>
         </div>
 
+        <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
     </v-container>
 </template>
 
@@ -41,12 +45,14 @@ export default {
     },
     data() {
         return {
+            overlay: false,
             messages:[]
         }
     },
     methods:{
         async bringMessages(){
-            
+            this.overlay = true;
+            this.messages =[];
             await db.collection("messages").where("forumSubject","==",this.$store.state.currentIndexForum.subject).get().then(
                 querySnapshot => {
                     querySnapshot.forEach(  doc => {
@@ -62,7 +68,7 @@ export default {
                     })
                 }
             );
-
+            this.overlay = false;
         }
     },
     created() {
