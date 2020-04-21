@@ -2,7 +2,7 @@
   <v-data-table :headers="headers" :items="desserts" :search="search" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>{{desserts.length}}</v-toolbar-title>
+        <v-toolbar-title>Usuarios</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer>
             <v-btn color="blue" text @click="add">Agregar usuario</v-btn>
@@ -45,6 +45,9 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.password" :rules="passwordRules" label="Contraseña" type="password"></v-text-field>
                   </v-col>
+                   <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.state" :rules="stateRules" label="Estado"></v-text-field>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -83,8 +86,14 @@
     </template>
     <template v-slot:item.action="{ item }">
       <div class="my-2">
-        <v-btn rounded color="success" @click="editItem(item)">Editar</v-btn>
-        <v-btn rounded color="red" @click="deleteItem(item)">Eliminar</v-btn>
+        <div class="my-2">
+        <v-btn small color="success" @click="editItem(item)" >Editar</v-btn>
+        </div>
+
+        <div class="my-2">
+        <v-btn small color="red" @click="deleteItem(item)" >Eliminar</v-btn>
+        </div>
+        
       </div>
     </template>
     <template v-slot:no-data>
@@ -111,6 +120,7 @@ export default {
       { text: "Password", value: "password" },
       { text: "Rol", value: "role" },
       { text: "# Mensajes", value: "number" },
+      { text: "Estado", value: "state" },
       { text: "Acciones", value: "action", sortable: false }
     ],
 
@@ -128,13 +138,17 @@ export default {
 
             ],
     roleRules: [
-                v => (v=='user'||v=='admin') || 'No es un role valido',
+                v => (v=='user'||v=='admin') || 'No es un role valido, solo user o admin',
 
             ],
     emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+\..+/.test(v) || "E-mail debe ser válido"
       ],
+      stateRules: [
+                v => (v=='Activo'||v=='Inactivo') || 'No es un role valido, solo Activo o Inactivo',
+                v => !!v || "Estado es requerido",
+            ],
     editedIndex: -1,
     editedItem: {
       name: "",
@@ -142,6 +156,7 @@ export default {
       email: "",
       password: "",
       role:"",
+      state:"",
       
     },
     defaultItem: {
@@ -150,6 +165,7 @@ export default {
       email: "",
       password: "",
       role:"",
+      state:"",
     },
     idItem:null,
     number:0,
@@ -212,7 +228,8 @@ export default {
                 'password':doc.data().password,
                 'role':doc.data().role,
                 'id':doc.id,
-                'number':0
+                'number':0,
+                'state':doc.data().state,
 
             }
             //this.numberMessage("admin2@prueba.com");
