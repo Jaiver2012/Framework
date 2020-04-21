@@ -20,7 +20,7 @@
             ></v-text-field>
 
           </template>
-       
+            
         
           <v-card>
             <v-card-title>
@@ -50,13 +50,36 @@
             </v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer>
+                  
+              </v-spacer>
               <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
               <v-btn color="blue darken-1" text @click="save">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
+        
       </v-toolbar>
+      <v-dialog v-model="showDismissibleAlert" max-width="290">
+         <v-card>
+        <v-card-title class="headline">Lo sentimos!</v-card-title>
+
+        <v-card-text>
+          {{error}}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="showDismissibleAlert = false"
+          >
+            Aceptar
+          </v-btn>
+        </v-card-actions>
+         </v-card>
+      </v-dialog>
     </template>
     <template v-slot:item.action="{ item }">
       <div class="my-2">
@@ -68,11 +91,8 @@
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
 
+
   </v-data-table>
-
-
-  
-
 </template>
 
 <style scoped>
@@ -90,6 +110,7 @@ export default {
       { text: "Email", value: "email" },
       { text: "Password", value: "password" },
       { text: "Rol", value: "role" },
+      { text: "# Mensajes", value: "number" },
       { text: "Acciones", value: "action", sortable: false }
     ],
 
@@ -130,7 +151,10 @@ export default {
       password: "",
       role:"",
     },
-    idItem:null
+    idItem:null,
+    number:0,
+    showDismissibleAlert: false,
+    error: "",
   }),
 
   computed: {
@@ -152,9 +176,32 @@ export default {
  
 
   methods: {
-    initialize() {
+
+
+     async numberMessage(){
+        this.number=0;
+        for(var i=0;i<this.desserts.length;i++){
+            let n =0;
+            await db.collection("messages")
+            .get()
+            .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              console.log(doc.data().creator)
+          if(doc.data().creator==this.desserts[i].email){
+            n ++;
+          }
+          });
+        });
+
+        this.desserts[i].number = n
+        }
+    },
+   async initialize() {
         this.desserts=[];
-      db.collection("users")
+        
+        //console.log(this.numberMessage());
+       // console.log(this.numberMessage());
+     await db.collection("users")
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -164,12 +211,19 @@ export default {
                 'lastName':doc.data().lastName,
                 'password':doc.data().password,
                 'role':doc.data().role,
-                'id':doc.id
+                'id':doc.id,
+                'number':0
 
             }
+            //this.numberMessage("admin2@prueba.com");
+             console.log(this.number);
             this.desserts.push(data);
           });
         });
+        this.numberMessage();
+        
+
+
     },
 
     add(){
@@ -186,15 +240,25 @@ export default {
 
     deleteItem(item) {
       const index = this.desserts.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
+     
         //var user = db.collection("users").doc(item.email).get();
-        console.log("a ver:"+item.id)
+        if(parseInt(item.number)==0){
+            
+        this.desserts.splice(index, 1);
+            console.log("a ver:"+item.id)
          db.collection("users").doc(item.id).delete().then(function(){
             console.log("se borro");
         }).catch(function(error){
             console.error("error",error);
         })
+
+        }else{
+          this.error="No puedes eliminar el usuario, porque tiene mensajes asociados";
+          this.showDismissibleAlert = true;
+        }
+             
+      
+        
        
     },
 
@@ -209,6 +273,10 @@ export default {
     save() {
       if (this.editedIndex ===-1) {
        //lo agregamos
+
+        var md5 = require('md5');
+       let pmd5 = md5(this.editedItem.password);
+       this.editedItem.password=pmd5
         db.collection("users").add(this.editedItem)
         .then((docRef)=>{
             console.log("Document con ID:",docRef.id)
@@ -216,17 +284,12 @@ export default {
         }).catch(function(error){
             console.error("Error:",error);}
             );
-            
-        
-        
-
       } else {
           //lo editamos
         
         db.collection("users").doc(this.idItem).update(this.editedItem)
         .then((docRef)=>{
-            console.log("se edito",docRef.id);
-            
+            console.log("se edito",docRef.id);  
         })
         .catch(function(error){
             console.error("error al editar",error);
@@ -234,9 +297,7 @@ export default {
         this.desserts.push(this.editedItem);
          this.initialize();
       }
-     
       this.close()
-      
     }
   },
 
