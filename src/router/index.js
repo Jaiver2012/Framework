@@ -43,6 +43,11 @@ export default new VueRouter({
             path: '/addCommentForum/:typeComment',
             name: 'AddCommentForum',
             component: () => import(/* webpackChunkName: "about" */ '../views/AddCommentForum.vue')
+        },
+        {
+            path: '/listUsers',
+            name: 'ListUsers',
+            component: () => import(/* webpackChunkName: "about" */ '../views/ListUsers.vue')
         }
     ]
 

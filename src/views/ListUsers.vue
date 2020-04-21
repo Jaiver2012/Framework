@@ -121,35 +121,10 @@ export default {
       { text: "Rol", value: "role" },
       { text: "# Mensajes", value: "number" },
       { text: "Estado", value: "state" },
-      { text: "Acciones", value: "action", sortable: false }
     ],
 
     desserts: [],
-    nameRules: [
-                v => !!v || 'El nombre es requerido',
-                v => v.length >2 || 'El nombre debe ser más largo a 3 caracteres',
-            ],
-    lastNameRules: [
-                v => !!v || 'El apellido es requerido',
-                v => v.length >2 || 'El apellido debe ser más largo a 3 caracteres',
-            ],
-    passwordRules: [
-                v => (v.length>4) || 'La contraseña debe tener más de 4 caracteres',
-
-            ],
-    roleRules: [
-                v => (v=='user'||v=='admin') || 'No es un role valido, solo user o admin',
-
-            ],
-    emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail debe ser válido"
-      ],
-      stateRules: [
-                v => (v=='activo'||v=='inactivo') || 'No es un estado valido, solo activo o inactivo',
-                v => !!v || "Estado es requerido",
-            ],
-    editedIndex: -1,
+  
     editedItem: {
       name: "",
       lastName: "",
@@ -169,27 +144,8 @@ export default {
     },
     idItem:null,
     number:0,
-    showDismissibleAlert: false,
-    error: "",
   }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "Agrega un usuario" : "Editar usuario";
-    }
-  },
-
-  mounted() {
-     
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close();
-    }
-  },
-
- 
 
   methods: {
 
@@ -243,81 +199,6 @@ export default {
 
     },
 
-    add(){
-        this.editedIndex=-1;
-        this.dialog=true;
-    },
-
-    editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-      this.idItem=item.id;
-    },
-
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-     
-        //var user = db.collection("users").doc(item.email).get();
-        if(parseInt(item.number)==0){
-            
-        this.desserts.splice(index, 1);
-            console.log("a ver:"+item.id)
-         db.collection("users").doc(item.id).delete().then(function(){
-            console.log("se borro");
-        }).catch(function(error){
-            console.error("error",error);
-        })
-
-        }else{
-          this.error="No puedes eliminar el usuario, porque tiene mensajes asociados";
-          this.showDismissibleAlert = true;
-        }
-             
-      
-        
-       
-    },
-
-    close() {
-      this.dialog = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
-    },
-
-    save() {
-      if (this.editedIndex ===-1) {
-       //lo agregamos
-
-        var md5 = require('md5');
-       let pmd5 = md5(this.editedItem.password);
-       this.editedItem.password=pmd5
-        db.collection("users").doc(this.editedItem.email).set(this.editedItem)
-        
-        .then((docRef)=>{
-           console.log(docRef)
-            this.initialize();
-        }).catch(function(error){
-            console.error("Error:",error);}
-            );
-            this.initialize();
-      } else {
-          //lo editamos
-        
-        db.collection("users").doc(this.idItem).update(this.editedItem)
-        .then((docRef)=>{
-            console.log("se edito",docRef.id);  
-        })
-        .catch(function(error){
-            console.error("error al editar",error);
-        });
-        this.desserts.push(this.editedItem);
-         this.initialize();
-      }
-      this.close()
-    }
   },
 
    created() {
