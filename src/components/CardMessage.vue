@@ -5,13 +5,13 @@
         <div v-if="messageData.dad != this.$store.state.currentIndexForum.subject" class="blue-grey lighten-5">
             <h2 class="font-weight-medium ml-10">Respuesta a:</h2>
             <v-card-title class="font-weight-light">
-            Comentario de {{messageData.creator}}
+            Comentario de {{messageDad.creator}}
             </v-card-title>
             <v-card-subtitle class="caption font-weight-bold">
-            Creado: {{messageData.creationDate}}
+            Creado: {{messageDad.creationDate}}
             </v-card-subtitle>
             <v-card-text class="body-1 font-weight-light">  
-            {{messageData.message}}
+            {{messageDad.message}}
             </v-card-text>
         </div>
 
@@ -61,7 +61,7 @@ export default {
         bringDadMessage(){
             db.collection("messages").
             where("forumSubject","==",this.$store.state.currentIndexForum.subject).
-            where("son","==",this.messageData.message).get().then(
+            where("sons","array-contains",this.messageData.message).get().then(
                 querySnapshot => {
                     querySnapshot.forEach(  doc => {
                         const data = {
@@ -76,7 +76,10 @@ export default {
                 }
             );
         }
-    }
+    },
+    created() {
+        this.bringDadMessage();
+    },
 }
 </script>
 

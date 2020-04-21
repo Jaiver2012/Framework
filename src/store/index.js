@@ -24,7 +24,7 @@ export default new Vuex.Store({
         changeCurrentForum(state,index){
             state.currentIndexForum = state.forums[index];
         },
-        changeCurrentUer(state,user){
+        changeCurrentUser(state,user){
             state.currentUser = user;
         },
         changeCurrentMessageToResponse(state,mesage){

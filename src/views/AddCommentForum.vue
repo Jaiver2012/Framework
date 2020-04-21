@@ -81,12 +81,14 @@ export default {
                         message: this.message,
                         creationDate: dt,
                         dad: this.$store.state.currentIndexForum.subject,
-                        son: ''
+                        sons: []
                     });
 
                 } else{
                     var idDoc='';
-
+                    var arrayWithNewItem = [];
+                    //change th son to father. Added specific son to son´s array father
+                    //give me id of message daddy
                     await db.collection("messages").
                     where("forumSubject","==",this.$store.state.currentIndexForum.subject).
                     where('message','==',this.$store.state.currentMessageToResponse.message).
@@ -94,12 +96,14 @@ export default {
                         querySnapshot => {
                             querySnapshot.forEach(  doc => {
                             idDoc=doc.id;
+                            arrayWithNewItem = doc.data().sons
                             })
                         }
                     );
+                    arrayWithNewItem.push(this.message);
 
                     await db.collection('messages').doc(idDoc).update({
-                        son: this.message,
+                        sons: arrayWithNewItem,
                     });
                     
                      //add secondary comment to forum
@@ -110,7 +114,7 @@ export default {
                         message: this.message,
                         creationDate: dt,
                         dad: this.$store.state.currentMessageToResponse.message,
-                        son: ''
+                        sons: []
                     });                
                 }
             
