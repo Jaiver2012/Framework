@@ -88,6 +88,9 @@
                 </v-card>
             </v-dialog>
 
+    <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
       
   </v-container>
 </template>
@@ -99,6 +102,7 @@ export default {
     name:"CreateForum",
     data() {
         return {
+            overlay: false,
             dialog: false,
             disableButton: true,
             subject:'',
@@ -113,7 +117,7 @@ export default {
     },
     methods: {
         async createForum(){
-            
+            this.overlay = true;
             //var dt = new Date().toString();
             var dt = new Date().toLocaleDateString('es-CO',{
                 weekday: "long",
@@ -127,13 +131,13 @@ export default {
             console.log(dt);
             try {
                 await db.collection('forums').doc(this.subject).set({
-                    creator: 'luisfcv97@gmail.com',
+                    creator: this.$store.state.currentUser,
                     subject: this.subject,
                     description: this.description,
                     creationDate: dt,
                     numberMessages: 0
                 });
-                
+                this.overlay = true;
                 this.dialog =true;
             } catch (error) {
                 console.log(error)

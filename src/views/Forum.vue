@@ -1,6 +1,10 @@
 <template>
     <v-container>
 
+        <div class="display-2 font-weight-black ma-5">
+            Foro
+        </div>
+
         <CardDataForum/>
 
         <div class="mt-10">
@@ -50,8 +54,9 @@ export default {
                             'message': doc.data().message,
                             'forumSubject': doc.data().forumSubject,
                             'creator': doc.data().creator,
-                            'creationDate': doc.data().creationDate
-                            //'messages': doc.messages.length
+                            'creationDate': doc.data().creationDate,
+                            'dad': doc.data().dad,
+                            'sons': doc.data().sons
                         }
                         this.messages.push(data)
                     })

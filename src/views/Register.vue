@@ -175,7 +175,6 @@ export default {
                 
                 var md5 = require('md5');
                 let pmd5 = md5(this.password1);
-                console.log(pmd5);
 
                 await db.collection('users').doc(this.email).set({
                     email: this.email,
@@ -196,9 +195,6 @@ export default {
     },
     computed: {
         disabledButton(){
-            console.log("email: "+this.email);
-            console.log("p2: "+this.password1);
-            console.log("p1: "+this.password2);
             return( !this.name || !this.lastName ||!this.email || !this.password1 || !this.password2 || !(this.password1 === this.password2) );
         }
     },

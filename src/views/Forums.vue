@@ -23,6 +23,11 @@
 
         <ForumList/>
         
+        <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
+
     </v-container>
 </template>
 
@@ -35,9 +40,14 @@ export default {
     components: {
         ForumList
     },
+    data() {
+        return {
+            overlay: false,
+        }
+    },
     methods: {
         async chargeForums(){
-
+            this.overlay = true;
             var forums = [];
             await db.collection("forums").get().then(
                 querySnapshot => {
@@ -53,7 +63,8 @@ export default {
                     })
                 }
             );
-            this.$store.commit('loadForums', forums)
+            this.$store.commit('loadForums', forums);
+            this.overlay = false;
         }
 
     },

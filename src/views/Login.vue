@@ -50,6 +50,11 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
   </v-container>
 </template>
 
@@ -61,6 +66,7 @@ export default {
 
   data() {
     return {
+      overlay: false,
       showDismissibleAlert: false,
       error: "",
       email: "",
@@ -89,6 +95,7 @@ export default {
 
     },
     async login() {
+      this.overlay = true;
       var roleAdm='admin';
       //var roleUser='user';
       var { email, password } = {};
@@ -105,24 +112,30 @@ export default {
 
         console.log("siiii esta en la bd")
         if(users.data().password==pmd5){
-          this.$store.commit('changeCurrentUer',email);
+          await db.collection("users").doc(email).update({
+            state: 'Activo'
+          });
+          this.$store.commit('changeCurrentUser',email);
           if(users.data().role==roleAdm){
-            
+            this.overlay = false;
             this.$router.push("/userAdmin");
           }else{
-            console.log("al estandar")
+            console.log("al estandar");
+            this.overlay = false;
             //ruta del estandar
             this.$router.push("/forums");
           }
 
         }
         else{
+          this.overlay = false;
           this.error="Contraseña incorrecta";
           this.showDismissibleAlert = true;
           //console.log("tratame serio")
         }
 
       }else{
+        this.overlay = false;
         this.error="No se encuentra registrado";
         this.showDismissibleAlert = true;
         //console.log("no esta en la bd")

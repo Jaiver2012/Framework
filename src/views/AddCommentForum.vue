@@ -31,8 +31,11 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <h1>perrro</h1>
-    <h1>{{typeCommentIndex}}</h1>
+
+        <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
     </v-container>
 </template>
 
@@ -48,6 +51,7 @@ export default {
     },
     data() {
         return {
+            overlay: false,
             message:'',
             ruleMessage:[
                 v=>!!v || "Su respuesta no debe estar vacía"
@@ -57,8 +61,8 @@ export default {
     },
     methods: {
         async saveMessage(){   
-
-             var dt = new Date().toLocaleDateString('es-CO',{
+            this.overlay = true;
+            var dt = new Date().toLocaleDateString('es-CO',{
                 weekday: "long",
                 year: "numeric", 
                 month: "long", 
@@ -70,6 +74,7 @@ export default {
 
             try {
                 console.log(this.typeCommentIndex)
+
                 if(this.typeCommentIndex==0){
 
                     //add central comment to forum
@@ -79,11 +84,42 @@ export default {
                         creator: this.$store.state.currentUser,
                         message: this.message,
                         creationDate: dt,
+                        dad: this.$store.state.currentIndexForum.subject,
+                        sons: []
                     });
 
                 } else{
+                    var idDoc='';
+                    var arrayWithNewItem = [];
+                    //change th son to father. Added specific son to son´s array father
+                    //give me id of message daddy
+                    await db.collection("messages").
+                    where("forumSubject","==",this.$store.state.currentIndexForum.subject).
+                    where('message','==',this.$store.state.currentMessageToResponse.message).
+                    get().then(
+                        querySnapshot => {
+                            querySnapshot.forEach(  doc => {
+                            idDoc=doc.id;
+                            arrayWithNewItem = doc.data().sons
+                            })
+                        }
+                    );
+                    arrayWithNewItem.push(this.message);
 
-                    console.log("dei")
+                    await db.collection('messages').doc(idDoc).update({
+                        sons: arrayWithNewItem,
+                    });
+                    
+                     //add secondary comment to forum
+                
+                    await db.collection('messages').doc().set({
+                        forumSubject: this.$store.state.currentIndexForum.subject,
+                        creator: this.$store.state.currentUser,
+                        message: this.message,
+                        creationDate: dt,
+                        dad: this.$store.state.currentMessageToResponse.message,
+                        sons: []
+                    });                
                 }
             
 
@@ -102,8 +138,7 @@ export default {
                     numberMessages: nm
                 });
                 
-
-
+                this.overlay = false;
                 this.$router.push('/forum');
             } catch (error) {
                 console.log(error)
