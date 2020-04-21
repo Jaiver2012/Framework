@@ -16,6 +16,9 @@ export default new Vuex.Store({
         currentMessageToResponse:{
 
         },
+        currentMessageToEdit:{
+
+        }
         
     },
     mutations: {
@@ -33,6 +36,9 @@ export default new Vuex.Store({
         },
         changeCurrentRol(state,rol){
             state.currentRol = rol;
+        },
+        changeCurrentMessageToEdit(state, message){
+            state.currentMessageToEdit = message;
         }
     },
     actions: {

@@ -48,6 +48,11 @@ export default new VueRouter({
             path: '/listUsers',
             name: 'ListUsers',
             component: () => import(/* webpackChunkName: "about" */ '../views/ListUsers.vue')
+        },
+        {
+            path: '/editMessage',
+            name: 'EditCommentForum',
+            component: () => import(/* webpackChunkName: "about" */ '../views/EditCommentForum.vue')
         }
     ]
 

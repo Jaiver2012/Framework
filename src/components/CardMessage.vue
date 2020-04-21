@@ -34,7 +34,8 @@
                 Eliminar
                 <v-icon right>delete</v-icon>
             </v-btn>
-            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser">
+            <v-btn text class="mr-10" v-if="messageData.creator==$store.state.currentUser"
+            @click="editComment(messageData)">
                 Editar
                 <v-icon right>create</v-icon>
             </v-btn>
@@ -199,6 +200,10 @@ export default {
                         sons: arrayWihtDeletedItem,
             });
 
+        },
+        editComment(message){
+            this.$store.commit('changeCurrentMessageToEdit',message);
+            this.$router.push('/editMessage');      
         }   
     },
     created() {
