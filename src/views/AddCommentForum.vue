@@ -31,8 +31,11 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <h1>perrro</h1>
-    <h1>{{typeCommentIndex}}</h1>
+
+        <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+
     </v-container>
 </template>
 
@@ -48,6 +51,7 @@ export default {
     },
     data() {
         return {
+            overlay: false,
             message:'',
             ruleMessage:[
                 v=>!!v || "Su respuesta no debe estar vacía"
@@ -57,8 +61,8 @@ export default {
     },
     methods: {
         async saveMessage(){   
-
-             var dt = new Date().toLocaleDateString('es-CO',{
+            this.overlay = true;
+            var dt = new Date().toLocaleDateString('es-CO',{
                 weekday: "long",
                 year: "numeric", 
                 month: "long", 
@@ -134,7 +138,7 @@ export default {
                     numberMessages: nm
                 });
                 
-
+                this.overlay = false;
                 this.$router.push('/forum');
             } catch (error) {
                 console.log(error)

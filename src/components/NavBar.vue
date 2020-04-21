@@ -29,7 +29,7 @@
                     </template>
                     
                     <v-list>
-                        <v-list-item @click="logout">
+                        <v-list-item to="/forums">
                             <v-list-item-title>Inicio</v-list-item-title>
                         </v-list-item>
                         <v-list-item @click="logout">
@@ -68,7 +68,9 @@
             </v-app-bar>
 
         </div>
-
+        <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
     </div>
 </template>
 
@@ -79,6 +81,7 @@ export default {
     name:'NavBar',
     data() {
         return {
+            overlay: false,
             disableButtonLogin: true,
             disableButtonRegister: false
         }
@@ -95,10 +98,12 @@ export default {
             this.$router.push('/register');
         },
         async logout(){
+            this.overlay = true;
             await db.collection("users").doc(this.$store.state.currentUser).update({
                 state: 'No activo'
             });
             this.$store.commit('changeCurrentUser','');
+            this.overlay = false;
             this.$router.push('/');
         }
     }
