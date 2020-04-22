@@ -20,11 +20,7 @@ export default new VueRouter({
             name: 'Register',
             component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
         },
-        {
-            path: '/userAdmin',
-            name: 'userAdmin',
-            component: () => import(/* webpackChunkName: "about" */ '../views/UserAdmin.vue')
-        },{
+       {
             path: '/forums',
             name: 'Forums',
             component: () => import(/* webpackChunkName: "about" */ '../views/Forums.vue')
@@ -44,15 +40,16 @@ export default new VueRouter({
             name: 'AddCommentForum',
             component: () => import(/* webpackChunkName: "about" */ '../views/AddCommentForum.vue')
         },
-        {
-            path: '/listUsers',
-            name: 'ListUsers',
-            component: () => import(/* webpackChunkName: "about" */ '../views/ListUsers.vue')
-        },
+       
         {
             path: '/editMessage',
             name: 'EditCommentForum',
             component: () => import(/* webpackChunkName: "about" */ '../views/EditCommentForum.vue')
+        },
+        {
+            path: '/users',
+            name: 'Users',
+            component: () => import(/* webpackChunkName: "about" */ '../views/Users.vue')
         }
     ]
 

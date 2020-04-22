@@ -121,7 +121,7 @@ export default {
             this.$store.commit('changeCurrentUser',email);
             if(users.data().role==roleAdm){
               this.overlay = false;
-              this.$router.push("/userAdmin");
+              this.$router.push("/users");
             }else{
               
               this.overlay = false;

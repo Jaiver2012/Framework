@@ -1,11 +1,16 @@
 <template>
-  <v-data-table :headers="headersAdmin" :items="desserts" :search="search" class="elevation-1">
+  <v-data-table :headers=headerOptions :items="desserts" :search="search" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>Usuarios</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer>
+        <v-spacer  >
+            <div v-if=buttonAdd>
             <v-btn color="blue" text @click="add">Agregar usuario</v-btn>
+            </div>
+            <div>
+            <v-btn color="blue" text to="/forums">Volver</v-btn>
+            </div>
         </v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ }">
@@ -180,7 +185,16 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Agrega un usuario" : "Editar usuario";
+    },
+
+    headerOptions(){
+        return (this.$store.state.currentRol=='admin'? this.headersAdmin:this.headers);
+    },
+
+    buttonAdd(){
+        return (this.$store.state.currentRol=='admin'? true:false);
     }
+
   },
 
   mounted() {

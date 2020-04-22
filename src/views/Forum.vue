@@ -1,6 +1,13 @@
 <template>
     <v-container>
 
+       <v-col cols="12">
+                <div>
+            <v-btn color="blue" text to="/forums">Volver</v-btn>
+            </div>
+         </v-col>
+            
+
         <div class="display-2 font-weight-black ma-5">
             Foro
         </div>

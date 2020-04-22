@@ -21,6 +21,8 @@ git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
 # git push -f git@github.com:<USERNAME>/<REPO>.git master:gh-pages
-git push -f git@github.com:jaiver2012/Framework.git master:gh-pages
+
+git push -f https://github.com/jaiver2012/Framework.git master:gh-pages
+
 
 cd -

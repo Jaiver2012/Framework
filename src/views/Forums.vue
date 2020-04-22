@@ -8,7 +8,7 @@
                 </v-btn>
             </v-col>
             <v-col  xs="12" sm="4" md="3" lg="2" xl="2" class="mb-5 mr-5">
-                <v-btn large class="primary" to="/listUsers">
+                <v-btn large class="primary" to="/users">
                     <v-icon left>refresh</v-icon>
                     Buscar usuario
                 </v-btn>

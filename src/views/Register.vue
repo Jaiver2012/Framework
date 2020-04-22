@@ -43,7 +43,7 @@
                             </v-text-field>
 
 
-                            <h2 class="ml-5">Introduzca email con el qe se quiere registrar</h2>
+                            <h2 class="ml-5">Introduzca email con el que se quiere registrar</h2>
                             <br>
                             <v-text-field
                             v-model="email"

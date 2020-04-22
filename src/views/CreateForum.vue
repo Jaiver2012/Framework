@@ -1,7 +1,19 @@
 <template>
   <v-container>
-        <v-row>
-            <h1>Crear Foro</h1>
+     
+        <v-row justify="center">
+
+            <v-col cols="12">
+                <div>
+            <v-btn color="blue" text to="/forums">Volver</v-btn>
+            </div>
+            </v-col>
+            
+           <v-col cols="12">
+                <h1>Crear Foro</h1>
+           </v-col>
+               
+            
         </v-row>
         <br>
         <h3>Intrduzca asunto del foro</h3>
