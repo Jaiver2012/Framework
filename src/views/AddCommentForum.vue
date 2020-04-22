@@ -127,7 +127,7 @@ export default {
                 await db.collection("forums").where("subject","==",this.$store.state.currentIndexForum.subject).get().then(
                 querySnapshot => {
                     querySnapshot.forEach(  doc => {
-                        console.log(doc.data().numberMessages)
+                      
                         nm=doc.data().numberMessages;
                     })
                 }
